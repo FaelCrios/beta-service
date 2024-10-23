@@ -1,0 +1,26 @@
+server:
+  servlet:
+    context-path: /beta-svc
+  port: 6060
+
+spring:
+  application:
+    name: "Beta"
+
+logging:
+  pattern:
+    level: logging.pattern.level=%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
