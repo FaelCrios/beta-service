@@ -21,17 +21,23 @@ public class BetaController {
     @GetMapping("/beta")
     @Observed(
             name = "user.name",
-            contextualName = "beta-->gama",
+            contextualName = "beta-->gama, beta-->omega",
             lowCardinalityKeyValues = {"userType", "userType2"}
     )
     public String comunicacaoModulos(){
         log.info("Serviço Beta foi chamado");
-        log.info("Serviço chamando o Serviço gama");
+        log.info("Serviço chamando o serviço gama e omega");
         ResponseEntity<String> response = restTemplate.exchange(
                 "http://localhost:5050/gama-svc/gama",
                 HttpMethod.GET,
                 null,
                 String.class
         );
-        return "Comunicação entre os serviços(Beta): "+response.getBody();    }
+        ResponseEntity<String> response2 = restTemplate.exchange(
+                "http://localhost:4040/omega-svc/omega",
+                HttpMethod.GET,
+                null,
+                String.class
+        );
+        return "Comunicação entre os serviços(Beta): "+response.getBody() + response2.getBody();    }
 }
